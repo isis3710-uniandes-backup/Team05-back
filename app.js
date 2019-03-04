@@ -7,9 +7,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 // api routes
-var reinos = require('./routes/reinos');
-var colectores = require('./routes/colectores');
-var clases = require('./routes/clases');
+const reinos = require('./routes/reinos');
+const colectores = require('./routes/colectores');
+const clases = require('./routes/clases');
+const ordenes = require('./routes/ordenes');
 
 
 var app = express();
@@ -43,5 +44,6 @@ app.use(function(err, req, res, next) {
 app.use('/api', reinos);
 app.use('/api', colectores);
 app.use('/api', clases);
+app.use('/api', ordenes)
 
 module.exports = app;
