@@ -2,6 +2,8 @@
 
 Este repositorio contiene el backend del proyecto de visualización de datos del museo de Historia Natural de la Universidad de los Andes.
 
+Para este servicio REST se utilizó una base de datos MongoDB mediante el servicio cloud ofrecido por mLab.
+
 En la carpeta raíz del proyecto se encuentran los archivos que contienen las colecciones de postman correspondientes a cada recurso.
 
 Para poder correr el proyecto es necesario:
