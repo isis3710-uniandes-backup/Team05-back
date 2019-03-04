@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "99cf2e5a-61be-4996-b1c0-5ed75b793be1",
+		"name": "Especimen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST especimenes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"descripcion\": \"Ejemplo\",\n    \"subEspecie\": \"subespecie\",\n    \"colector\": \"h5hbf8fbjnv\",\n\t  \"reino\": \"7dbjbc8ffn\",\n\t  \"orden\":\"djk34jn55n6j6\",\n\t  \"clase\": \"45jkn5jnn5\",\n\t  \"lugar\": \"j6jjkn676\",\n\t  \"especie\": \"jh5h5hh65\",\n\t  \"familia\": \"45h4bh5bj\",\n\t  \"genero\": \"jhb5b5jb5\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/especimenes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"especimenes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET especimenes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/especimenes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"especimenes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT especimenes",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"_id\": \"5c7cad21cf319d4bf4099074\",\n    \"descripcion\": \"Ejemplo editado\",\n    \"subEspecie\": \"subespecie editada\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/especimenes/5c7cad21cf319d4bf4099074",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"especimenes",
+						"5c7cad21cf319d4bf4099074"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE especimenes",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/especimenes/5c7cad21cf319d4bf4099074",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"especimenes",
+						"5c7cad21cf319d4bf4099074"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
