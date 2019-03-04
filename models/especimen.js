@@ -1,12 +1,18 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
-let ColectorSchema = require('colector');
 
 let especimenSchema = new Schema({
 
   descripcion: String,
   subEspecie: String,
-  colector: ColectorSchema
+  colector: int,
+  reino: int,
+  orden:int,
+  clase: int,
+  lugar: int,
+  especie: int,
+  familia: int,
+  genero: int
 
 }, { collection: 'especimenes'});
 

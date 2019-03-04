@@ -1,56 +1,56 @@
-let Clase = require('../models/especimen');
+let Especimen = require('../models/especimen');
 let express = require('express');
 let router = express.Router();
 
 router.route('/especimenes').get(function(req, res) {
-  Clase.find(function(err, clases) {
+  Especimen.find(function(err, especimenes) {
     if (err) {
       return res.send(err);
     }
 
-    res.json(clases);
+    res.json(especimenes);
   });
 });
 
-router.route('/clases').post(function(req, res) {
-  let clase = new Clase(req.body);
+router.route('/especimenes').post(function(req, res) {
+  let especimen = new Especimen(req.body);
 
-  clase.save(function(err, clase) {
+  especimen.save(function(err, especimen) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Clase añadida' }, clase]);
+    res.send([{ message: 'Especimen añadida' }, especimen]);
   })
 });
 
-router.route('/clases/:id').put(function(req, res) {
-  Clase.findOne({ _id: req.params.id }, function(err, clase) {
+router.route('/especimenes/:id').put(function(req, res) {
+  Especimen.findOne({ _id: req.params.id }, function(err, especimen) {
     if (err) {
       return res.send(err);
     }
 
     for (prop in req.body) {
-      clase[prop] = req.body[prop];
+      especimen[prop] = req.body[prop];
     }
 
-    clase.save(function(err, clase) {
+    especimen.save(function(err, especimen) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Clase actualizada'}, clase]);
+      res.send([{ message: 'Especimen actualizada'}, especimen]);
     });
   })
 });
 
-router.route('/clases/:id').delete(function(req, res) {
-  Clase.deleteOne({ _id: req.params.id }, function(err) {
+router.route('/especimenes/:id').delete(function(req, res) {
+  Especimen.deleteOne({ _id: req.params.id }, function(err) {
     if (err) {
       return res.send(err);
     }
 
-    res.json({ message: 'Clase eliminada' });
+    res.json({ message: 'Especimen eliminada' });
   });
 });
 
