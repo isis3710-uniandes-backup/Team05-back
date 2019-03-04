@@ -45,7 +45,7 @@ router.route('/colectores/:id').put(function(req, res) {
 });
 
 router.route('/colectores/:id').delete(function(req, res) {
-  Colector.remove({ _id: req.params.id }, function(err, colector) {
+  Colector.deleteOne({ _id: req.params.id }, function(err, colector) {
     if (err) {
       return res.send(err);
     }

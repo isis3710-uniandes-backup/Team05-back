@@ -45,7 +45,7 @@ router.route('/reinos/:id').put(function(req, res) {
 });
 
 router.route('/reinos/:id').delete(function(req, res) {
-  Reino.remove({ _id: req.params.id }, function(err, reino) {
+  Reino.deleteOne({ _id: req.params.id }, function(err, reino) {
     if (err) {
       return res.send(err);
     }

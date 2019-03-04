@@ -45,7 +45,7 @@ router.route('/clases/:id').put(function(req, res) {
 });
 
 router.route('/clases/:id').delete(function(req, res) {
-  Clase.remove({ _id: req.params.id }, function(err, clase) {
+  Clase.deleteOne({ _id: req.params.id }, function(err, clase) {
     if (err) {
       return res.send(err);
     }
