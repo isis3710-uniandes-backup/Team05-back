@@ -1,4 +1,4 @@
-let Clase = require('../models/lugar');
+let Lugar = require('../models/lugar');
 let express = require('express');
 let router = express.Router();
 
