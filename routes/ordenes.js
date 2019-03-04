@@ -15,12 +15,12 @@ router.route('/ordenes').get(function(req, res) {
 router.route('/ordenes').post(function(req, res) {
   let orden = new Orden(req.body);
 
-  orden.save(function(err) {
+  orden.save(function(err, orden) {
     if (err) {
       return res.send(err);
     }
 
-    res.send({ message: 'Orden añadida' });
+    res.send([{ message: 'Orden añadida'}, orden]);
   })
 });
 
@@ -30,22 +30,26 @@ router.route('/ordenes/:id').put(function(req, res) {
       return res.send(err);
     }
 
+    if (orden === null) {
+      return res.send({ message: 'Orden no existe'});
+    }
+
     for (prop in req.body) {
       orden[prop] = req.body[prop];
     }
 
-    orden.save(function(err) {
+    orden.save(function(err, orden) {
       if (err) {
         return res.send(err);
       }
 
-      res.send({ message: 'Orden actualizada'});
+      res.send([{ message: 'Orden actualizada'}, orden]);
     });
   })
 });
 
 router.route('/ordenes/:id').delete(function(req, res) {
-  Orden.deleteOne({ _id: req.params.id }, function(err, orden) {
+  Orden.deleteOne({ _id: req.params.id }, function(err) {
     if (err) {
       return res.send(err);
     }

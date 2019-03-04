@@ -15,12 +15,12 @@ router.route('/colectores').get(function(req, res) {
 router.route('/colectores').post(function(req, res) {
   let colector = new Colector(req.body);
 
-  colector.save(function(err) {
+  colector.save(function(err, colector) {
     if (err) {
       return res.send(err);
     }
 
-    res.send({ message: 'Colector añadido' });
+    res.send([{ message: 'Colector añadido' }, colector]);
   })
 });
 
@@ -34,12 +34,12 @@ router.route('/colectores/:id').put(function(req, res) {
       colector[prop] = req.body[prop];
     }
 
-    colector.save(function(err) {
+    colector.save(function(err, colector) {
       if (err) {
         return res.send(err);
       }
 
-      res.send({ message: 'Colector actualizado'});
+      res.send([{ message: 'Colector actualizado'}, colector]);
     });
   })
 });
