@@ -11,7 +11,11 @@ const reinos = require('./routes/reinos');
 const colectores = require('./routes/colectores');
 const clases = require('./routes/clases');
 const ordenes = require('./routes/ordenes');
-
+const especies= require('./routes/especies');
+const familias= require('./routes/familias');
+const generos= require('./routes/generos');
+const lugares = require('./routes/lugares');
+const especimenes = require('./routes/especimenes');
 
 var app = express();
 
@@ -44,6 +48,11 @@ app.use(function(err, req, res, next) {
 app.use('/api', reinos);
 app.use('/api', colectores);
 app.use('/api', clases);
+app.use('/api', especies);
+app.use('/api', familias);
+app.use('/api', generos);
 app.use('/api', ordenes)
+app.use('/api', lugares);
+app.use('/api', especimenes);
 
 module.exports = app;
