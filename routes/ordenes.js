@@ -15,12 +15,12 @@ router.route('/ordenes').get(function(req, res) {
 router.route('/ordenes').post(function(req, res) {
   let orden = new Orden(req.body);
 
-  orden.save(function(err, orden) {
+  orden.save(function(err, newOrden) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Orden añadida'}, orden]);
+    res.send([{ message: 'Orden añadida'}, newOrden]);
   })
 });
 
@@ -38,12 +38,12 @@ router.route('/ordenes/:id').put(function(req, res) {
       orden[prop] = req.body[prop];
     }
 
-    orden.save(function(err, orden) {
+    orden.save(function(err, updatedOrden) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Orden actualizada'}, orden]);
+      res.send([{ message: 'Orden actualizada'}, updatedOrden]);
     });
   })
 });

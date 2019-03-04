@@ -15,12 +15,12 @@ router.route('/familias').get(function(req, res) {
 router.route('/familias').post(function(req, res) {
   let familia = new Familia(req.body);
 
-  familia.save(function(err, familia) {
+  familia.save(function(err, newFamilia) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Familia añadida' }, familia]);
+    res.send([{ message: 'Familia añadida' }, newFamilia]);
   })
 });
 
@@ -30,22 +30,26 @@ router.route('/familias/:id').put(function(req, res) {
       return res.send(err);
     }
 
+    if (familia === null) {
+      return res.send({ message: 'Familia no existe'});
+    }
+
     for (prop in req.body) {
       familia[prop] = req.body[prop];
     }
 
-    familia.save(function(err) {
+    familia.save(function(err, updatedFamilia) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Familia actualizada'}, familia]);
+      res.send([{ message: 'Familia actualizada'}, updatedFamilia]);
     });
   })
 });
 
 router.route('/familias/:id').delete(function(req, res) {
-  Familia.deleteOne({ _id: req.params.id }, function(err, familia) {
+  Familia.deleteOne({ _id: req.params.id }, function(err) {
     if (err) {
       return res.send(err);
     }

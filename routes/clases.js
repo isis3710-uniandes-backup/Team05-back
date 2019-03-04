@@ -15,12 +15,12 @@ router.route('/clases').get(function(req, res) {
 router.route('/clases').post(function(req, res) {
   let clase = new Clase(req.body);
 
-  clase.save(function(err, clase) {
+  clase.save(function(err, newClase) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Clase añadida' }, clase]);
+    res.send([{ message: 'Clase añadida' }, newClase]);
   })
 });
 
@@ -30,16 +30,20 @@ router.route('/clases/:id').put(function(req, res) {
       return res.send(err);
     }
 
+    if (clase === null) {
+      return res.send({ message: 'Clase no existe'});
+    }
+
     for (prop in req.body) {
       clase[prop] = req.body[prop];
     }
 
-    clase.save(function(err, clase) {
+    clase.save(function(err, updatedClase) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Clase actualizada'}, clase]);
+      res.send([{ message: 'Clase actualizada'}, updatedClase]);
     });
   })
 });

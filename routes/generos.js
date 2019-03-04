@@ -15,12 +15,12 @@ router.route('/generos').get(function(req, res) {
 router.route('/generos').post(function(req, res) {
   let genero = new Genero(req.body);
 
-  genero.save(function(err) {
+  genero.save(function(err, newGenero) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Genero añadido' }, genero]);
+    res.send([{ message: 'Genero añadido' }, newGenero]);
   })
 });
 
@@ -30,16 +30,20 @@ router.route('/generos/:id').put(function(req, res) {
       return res.send(err);
     }
 
+    if (genero === null) {
+      return res.send({ message: 'Genero no existe'});
+    }
+
     for (prop in req.body) {
       genero[prop] = req.body[prop];
     }
 
-    genero.save(function(err) {
+    genero.save(function(err, updatedGenero) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Genero actualizada'}, genero]);
+      res.send([{ message: 'Genero actualizada'}, updatedGenero]);
     });
   })
 });

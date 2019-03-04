@@ -15,12 +15,12 @@ router.route('/especimenes').get(function(req, res) {
 router.route('/especimenes').post(function(req, res) {
   let especimen = new Especimen(req.body);
 
-  especimen.save(function(err, especimen) {
+  especimen.save(function(err, newEspecimen) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Espécimen añadido' }, especimen]);
+    res.send([{ message: 'Espécimen añadido' }, newEspecimen]);
   })
 });
 
@@ -30,16 +30,20 @@ router.route('/especimenes/:id').put(function(req, res) {
       return res.send(err);
     }
 
+    if (especimen === null) {
+      return res.send({ message: 'Especimen no existe'});
+    }
+
     for (prop in req.body) {
       especimen[prop] = req.body[prop];
     }
 
-    especimen.save(function(err, especimen) {
+    especimen.save(function(err, updatedEspecimen) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Espécimen actualizado'}, especimen]);
+      res.send([{ message: 'Espécimen actualizado'}, updatedEspecimen]);
     });
   })
 });

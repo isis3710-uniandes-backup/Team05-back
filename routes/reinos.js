@@ -15,12 +15,12 @@ router.route('/reinos').get(function(req, res) {
 router.route('/reinos').post(function(req, res) {
   let reino = new Reino(req.body);
 
-  reino.save(function(err, reino) {
+  reino.save(function(err, newReino) {
     if (err) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Reino añadido' }, reino]);
+    res.send([{ message: 'Reino añadido' }, newReino]);
   })
 });
 
@@ -30,22 +30,26 @@ router.route('/reinos/:id').put(function(req, res) {
       return res.send(err);
     }
 
+    if (reino === null) {
+      return res.send({ message: 'Reino no existe'});
+    }
+
     for (prop in req.body) {
       reino[prop] = req.body[prop];
     }
 
-    reino.save(function(err, reino) {
+    reino.save(function(err, updatedReino) {
       if (err) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Reino actualizado'}, reino]);
+      res.send([{ message: 'Reino actualizado'}, updatedReino]);
     });
   })
 });
 
 router.route('/reinos/:id').delete(function(req, res) {
-  Reino.deleteOne({ _id: req.params.id }, function(err, reino) {
+  Reino.deleteOne({ _id: req.params.id }, function(err) {
     if (err) {
       return res.send(err);
     }
