@@ -14,8 +14,9 @@ var clases = require('./routes/clases');
 var app = express();
 
 // connect to MongoDB Atlas
-var dbName = 'bioAndes';
-var connectionString = `mongodb://bioAndes1:esto_es_bioAndes1@cluster0-shard-00-00-d8fao.mongodb.net:27017,cluster0-shard-00-01-d8fao.mongodb.net:27017,cluster0-shard-00-02-d8fao.mongodb.net:27017/${dbName}?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true`;
+var dbName = 'bioandes';
+var connectionString = `mongodb://bioandes:clave_bioandes1@ds261247.mlab.com:61247/${dbName}`;
+// var connectionString = `mongodb://bioandes1:esta_es_1a_clave@cluster0-shard-00-00-d8fao.mongodb.net:27017,cluster0-shard-00-01-d8fao.mongodb.net:27017,cluster0-shard-00-02-d8fao.mongodb.net:27017/${dbName}?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true`;
 
 mongoose.connect(connectionString, { useNewUrlParser: true });
 
