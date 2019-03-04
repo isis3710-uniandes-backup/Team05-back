@@ -39,7 +39,7 @@ router.route('/familias/:id').put(function(req, res) {
         return res.send(err);
       }
 
-      res.send({ message: 'Familia actualizada'});
+      res.send([{ message: 'Familia actualizada'}, familia]);
     });
   })
 });

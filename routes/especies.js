@@ -39,7 +39,7 @@ router.route('/especies/:id').put(function(req, res) {
         return res.send(err);
       }
 
-      res.send({ message: 'Especie actualizada'});
+      res.send([{ message: 'Especie actualizada'}, especie]);
     });
   })
 });
