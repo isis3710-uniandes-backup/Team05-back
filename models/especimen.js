@@ -1,22 +1,21 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+let ObjectId = Schema.ObjectId;
 
 let especimenSchema = new Schema({
-
   descripcion: String,
-  subEspecie: String,
-  colector: { $oid: String },
-  lugar: { $oid: String },
-  ubicación: {
+  colector: ObjectId,
+  lugar: ObjectId,
+  ubicacion: {
     latitud: Number,
     longitud: Number
   },
-  reino: { $oid: String },
-  clase: { $oid: String},
-  orden: { $oid: String},
-  familia: { $oid: String},
-  genero: { $oid: String },
-  especie: { $oid: String }
+  reino: ObjectId,
+  clase: ObjectId,
+  orden: ObjectId,
+  familia: ObjectId,
+  genero: ObjectId,
+  especie: ObjectId
 }, { collection: 'especimenes'});
 
 module.exports = mongoose.model('Especimen', especimenSchema);

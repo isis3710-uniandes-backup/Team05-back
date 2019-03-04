@@ -20,7 +20,7 @@ router.route('/especimenes').post(function(req, res) {
       return res.send(err);
     }
 
-    res.send([{ message: 'Especimen añadida' }, especimen]);
+    res.send([{ message: 'Espécimen añadido' }, especimen]);
   })
 });
 
@@ -39,7 +39,7 @@ router.route('/especimenes/:id').put(function(req, res) {
         return res.send(err);
       }
 
-      res.send([{ message: 'Especimen actualizada'}, especimen]);
+      res.send([{ message: 'Espécimen actualizado'}, especimen]);
     });
   })
 });
@@ -50,7 +50,7 @@ router.route('/especimenes/:id').delete(function(req, res) {
       return res.send(err);
     }
 
-    res.json({ message: 'Especimen eliminada' });
+    res.json({ message: 'Espécimen eliminado' });
   });
 });
 

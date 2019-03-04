@@ -15,12 +15,12 @@ router.route('/especies').get(function(req, res) {
 router.route('/especies').post(function(req, res) {
   let especie = new Especie(req.body);
 
-  especie.save(function(err) {
+  especie.save(function(err, especie) {
     if (err) {
       return res.send(err);
     }
 
-    res.send({ message: 'Especie añadida' });
+    res.send([{ message: 'Especie añadida' }, especie]);
   })
 });
 
@@ -44,7 +44,7 @@ router.route('/especies/:id').put(function(req, res) {
   })
 });
 
-router.route('/especie/:id').delete(function(req, res) {
+router.route('/especies/:id').delete(function(req, res) {
   Especie.deleteOne({ _id: req.params.id }, function(err, especie) {
     if (err) {
       return res.send(err);

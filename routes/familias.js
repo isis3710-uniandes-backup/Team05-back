@@ -13,14 +13,14 @@ router.route('/familias').get(function(req, res) {
 });
 
 router.route('/familias').post(function(req, res) {
-  let familias = new Familia(req.body);
+  let familia = new Familia(req.body);
 
-  familia.save(function(err) {
+  familia.save(function(err, familia) {
     if (err) {
       return res.send(err);
     }
 
-    res.send({ message: 'Familia añadida' });
+    res.send([{ message: 'Familia añadida' }, familia]);
   })
 });
 
@@ -44,7 +44,7 @@ router.route('/familias/:id').put(function(req, res) {
   })
 });
 
-router.route('/familia/:id').delete(function(req, res) {
+router.route('/familias/:id').delete(function(req, res) {
   Familia.deleteOne({ _id: req.params.id }, function(err, familia) {
     if (err) {
       return res.send(err);
