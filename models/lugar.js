@@ -5,11 +5,7 @@ let lugarSchema = new Schema({
   pais: String,
   departamento: String,
   municipio: String,
-  localidad: String,
-  latitud: Double,
-  longitud: Double,
-  elMin: Double,
-  elMax: Double
+  localidad: String
 }, { collection: 'lugares'});
 
 module.exports = mongoose.model('Lugar', lugarSchema);
