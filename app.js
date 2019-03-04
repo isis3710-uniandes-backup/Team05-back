@@ -11,6 +11,7 @@ const reinos = require('./routes/reinos');
 const colectores = require('./routes/colectores');
 const clases = require('./routes/clases');
 const ordenes = require('./routes/ordenes');
+const lugares = require('./routes/lugares');
 
 
 var app = express();
@@ -45,5 +46,6 @@ app.use('/api', reinos);
 app.use('/api', colectores);
 app.use('/api', clases);
 app.use('/api', ordenes)
+app.use('/api', lugares);
 
 module.exports = app;
