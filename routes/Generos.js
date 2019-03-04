@@ -13,14 +13,14 @@ router.route('/generos').get(function(req, res) {
 });
 
 router.route('/generos').post(function(req, res) {
-  let generos = new Generos(req.body);
+  let genero = new Genero(req.body);
 
-  especie.save(function(err) {
+  genero.save(function(err) {
     if (err) {
       return res.send(err);
     }
 
-    res.send({ message: 'Genero añadido' });
+    res.send([{ message: 'Genero añadido' }, genero]);
   })
 });
 
@@ -44,8 +44,8 @@ router.route('/generos/:id').put(function(req, res) {
   })
 });
 
-router.route('/genero/:id').delete(function(req, res) {
-  Genero.deleteOne({ _id: req.params.id }, function(err, genero) {
+router.route('/generos/:id').delete(function(req, res) {
+  Genero.deleteOne({ _id: req.params.id }, function(err) {
     if (err) {
       return res.send(err);
     }
