@@ -15,12 +15,12 @@ router.route('/reinos').get(function(req, res) {
 router.route('/reinos').post(function(req, res) {
   let reino = new Reino(req.body);
 
-  reino.save(function(err) {
+  reino.save(function(err, reino) {
     if (err) {
       return res.send(err);
     }
 
-    res.send({ message: 'Reino añadido' });
+    res.send([{ message: 'Reino añadido' }, reino]);
   })
 });
 
@@ -34,12 +34,12 @@ router.route('/reinos/:id').put(function(req, res) {
       reino[prop] = req.body[prop];
     }
 
-    reino.save(function(err) {
+    reino.save(function(err, reino) {
       if (err) {
         return res.send(err);
       }
 
-      res.send({ message: 'Reino actualizado'});
+      res.send([{ message: 'Reino actualizado'}, reino]);
     });
   })
 });

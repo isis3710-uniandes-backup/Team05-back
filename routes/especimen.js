@@ -1,8 +1,8 @@
-let Clase = require('../models/clase');
+let Clase = require('../models/especimen');
 let express = require('express');
 let router = express.Router();
 
-router.route('/clases').get(function(req, res) {
+router.route('/especimenes').get(function(req, res) {
   Clase.find(function(err, clases) {
     if (err) {
       return res.send(err);
