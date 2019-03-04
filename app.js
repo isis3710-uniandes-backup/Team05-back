@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 
 // api routes
 var reinos = require('./routes/reinos');
+var colectores = require('./routes/colectores');
+
 
 var app = express();
 
@@ -18,6 +20,8 @@ mongoose.connect(connectionString, { useNewUrlParser: true });
 
 // api endpoints
 app.use('/api', reinos);
+app.use('/api', colectores);
+
 
 app.use(logger('dev'));
 app.use(express.json());
