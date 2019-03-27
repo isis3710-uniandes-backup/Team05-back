@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 router.route('/reinos').get(async function(req, res) {
-  const reinoSnapshot = await db.collection('reinos').get();
+  const reinosSnapshot = await db.collection('reinos').get();
   const reinos = [];
-  reinoSnapshot.forEach((reino) => {
+  reinosSnapshot.forEach(reino => {
     reinos.push({
       id: reino.id,
       nombre: reino.data().nombre

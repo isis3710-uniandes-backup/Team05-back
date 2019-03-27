@@ -3,12 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 router.route('/ordenes').get(async function(req, res) {
-  const ordenSnapshot = await db.collection('ordenes').get();
+  const ordenesSnapshot = await db.collection('ordenes').get();
   const ordenes = [];
-  ordenSnapshot.forEach((reino) => {
+  ordenesSnapshot.forEach(orden => {
     ordenes.push({
-      id: reino.id,
-      nombre: reino.data().nombre
+      id: orden.id,
+      nombre: orden.data().nombre
     });
   });
   res.json(ordenes);

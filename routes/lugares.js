@@ -1,60 +1,52 @@
-let Lugar = require('../models/lugar');
-let express = require('express');
-let router = express.Router();
+const db = require('../modules/firebase');
+const express = require('express');
+const router = express.Router();
 
-router.route('/lugares').get(function(req, res) {
-  Lugar.find(function(err, lugares) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(lugares);
-  });
-});
-
-router.route('/lugares').post(function(req, res) {
-  let lugar = new Lugar(req.body);
-
-  lugar.save(function(err, newLugar) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Lugar añadido' }, newLugar]);
-  })
-});
-
-router.route('/lugares/:id').put(function(req, res) {
-  Lugar.findOne({ _id: req.params.id }, function(err, lugar) {
-    if (err) {
-      return res.send(err);
-    }
-    if (lugar === null) {
-      return res.send({ message: 'Lugar no existe'});
-    }
-
-    for (prop in req.body) {
-      lugar[prop] = req.body[prop];
-    }
-
-    lugar.save(function(err, updatedLugar) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Lugar actualizado'}, updatedLugar]);
+router.route('/lugares').get(async function(req, res) {
+  const lugaresSnapshot = await db.collection('lugares').get();
+  const lugares = [];
+  lugaresSnapshot.forEach(lugar => {
+    console.log(lugar);
+    lugares.push({
+      id: lugar.id,
+      pais: lugar.data().pais,
+      departamento: lugar.data().departamento,
+      municipio: lugar.data().municipio,
+      localidad: lugar.data().localidad
     });
-  })
+  });
+  res.json(lugares);
 });
 
-router.route('/lugares/:id').delete(function(req, res) {
-  Lugar.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/lugares').post(async function(req, res) {
+  const lugar = {
+    pais: req.body.pais,
+    departamento: req.body.departamento,
+    municipio: req.body.municipio,
+    localidad: req.body.localidad
+  }
+  const docRef = await db.collection('lugares').add(lugar);
 
-    res.json({ message: 'Lugar eliminado' });
-  });
+  res.json({ message: 'Lugar creado', id: docRef.id });
+});
+
+router.route('/lugar/:id').put(async function(req, res) {
+  const lugar = {
+    pais: req.body.pais,
+    departamento: req.body.departamento,
+    municipio: req.body.municipio,
+    localidad: req.body.localidad
+  }
+
+  await db.collection('lugares').doc(req.params.id).set(lugar);
+
+  res.json({ message: 'Lugar actualizado' });
+});
+
+router.route('/lugar/:id').delete(async function(req, res) {
+  await db.collection('lugares').doc(req.params.id).delete();
+
+  res.json({ message: 'Lugar eliminado' });
 });
 
 module.exports = router;
