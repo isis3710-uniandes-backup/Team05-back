@@ -6,7 +6,6 @@ router.route('/lugares').get(async function(req, res) {
   const lugaresSnapshot = await db.collection('lugares').get();
   const lugares = [];
   lugaresSnapshot.forEach(lugar => {
-    console.log(lugar);
     lugares.push({
       id: lugar.id,
       pais: lugar.data().pais,
@@ -31,14 +30,12 @@ router.route('/lugares').post(async function(req, res) {
 });
 
 router.route('/lugar/:id').put(async function(req, res) {
-  const lugar = {
-    pais: req.body.pais,
-    departamento: req.body.departamento,
-    municipio: req.body.municipio,
-    localidad: req.body.localidad
+  const lugar = {};
+  for (prop in req.body) {
+    lugar[prop] = req.body[prop];
   }
 
-  await db.collection('lugares').doc(req.params.id).set(lugar);
+  await db.collection('lugares').doc(req.params.id).set(lugar, { merge: true });
 
   res.json({ message: 'Lugar actualizado' });
 });

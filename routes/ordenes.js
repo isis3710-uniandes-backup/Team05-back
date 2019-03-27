@@ -27,7 +27,7 @@ router.route('/ordenes').post(async function(req, res) {
 router.route('/orden/:id').put(async function(req, res) {
   const orden = {
     nombre: req.body.nombre
-  }
+  };
 
   await db.collection('ordenes').doc(req.params.id).set(orden);
 
