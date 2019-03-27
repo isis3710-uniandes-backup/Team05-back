@@ -1,61 +1,42 @@
-let Familia = require('../models/familia');
-let express = require('express');
-let router = express.Router();
+const db = require('../modules/firebase');
+const express = require('express');
+const router = express.Router();
 
-router.route('/familias').get(function(req, res) {
-  Familia.find(function(err, familias) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(familias);
-  });
-});
-
-router.route('/familias').post(function(req, res) {
-  let familia = new Familia(req.body);
-
-  familia.save(function(err, newFamilia) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Familia añadida' }, newFamilia]);
-  })
-});
-
-router.route('/familias/:id').put(function(req, res) {
-  Familia.findOne({ _id: req.params.id }, function(err, familia) {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (familia === null) {
-      return res.send({ message: 'Familia no existe'});
-    }
-
-    for (prop in req.body) {
-      familia[prop] = req.body[prop];
-    }
-
-    familia.save(function(err, updatedFamilia) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Familia actualizada'}, updatedFamilia]);
+router.route('/familias').get(async function(req, res) {
+  const familiasSnapshot = await db.collection('familias').get();
+  const familias = [];
+  familiasSnapshot.forEach(familia => {
+    familias.push({
+      id: familia.id,
+      nombre: familia.data().nombre
     });
-  })
+  });
+  res.json(familias);
 });
 
-router.route('/familias/:id').delete(function(req, res) {
-  Familia.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/familias').post(async function(req, res) {
+  const familia = {
+    nombre: req.body.nombre
+  };
+  const docRef = await db.collection('familias').add(familia);
 
-    res.json({ message: 'Familia eliminada' });
-  });
+  res.json({message: 'Familia creada', id: docRef.id});
+});
+
+router.route('/familia/:id').put(async function(req, res) {
+  const familia = {
+    nombre: req.body.nombre
+  };
+
+  await db.collection('familias').doc(req.params.id).set(familia);
+  
+  res.json({ message: 'Familia actualizada' });
+});
+
+router.route('/familia/:id').delete(async function(req, res) {
+  await db.collection('familias').doc(req.params.id).delete();
+
+  res.json({ message: 'Familia eliminada' });
 });
 
 module.exports = router;
