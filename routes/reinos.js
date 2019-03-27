@@ -1,61 +1,45 @@
-let Reino = require('../models/reino');
-let express = require('express');
-let router = express.Router();
+const db = require('../modules/firebase');
+const Reino = require('../models/reino');
+const express = require('express');
+const router = express.Router();
 
-router.route('/reinos').get(function(req, res) {
-  Reino.find(function(err, reinos) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(reinos);
-  });
-});
-
-router.route('/reinos').post(function(req, res) {
-  let reino = new Reino(req.body);
-
-  reino.save(function(err, newReino) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Reino añadido' }, newReino]);
-  })
-});
-
-router.route('/reinos/:id').put(function(req, res) {
-  Reino.findOne({ _id: req.params.id }, function(err, reino) {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (reino === null) {
-      return res.send({ message: 'Reino no existe'});
-    }
-
-    for (prop in req.body) {
-      reino[prop] = req.body[prop];
-    }
-
-    reino.save(function(err, updatedReino) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Reino actualizado'}, updatedReino]);
+router.route('/reinos').get(async function(req, res) {
+  const reinoSnapshot = await db.collection('reinos').get();
+  const reinos = [];
+  reinoSnapshot.forEach((reino) => {
+    reinos.push({
+      id: reino.id,
+      nombre: reino.data().nombre
     });
-  })
+  });
+  res.json(reinos);
 });
 
-router.route('/reinos/:id').delete(function(req, res) {
-  Reino.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/reinos').post(async function(req, res) {
+  const reino = {
+    nombre: req.body.nombre
+  };
 
-    res.json({ message: 'Reino eliminado' });
-  });
+  const docRef = await db.collection('reinos').add(reino);
+
+  res.json({ message: 'Reino creado', id: docRef.id });
+});
+
+router.route('/reino/:id').put(async function(req, res) {
+  let reino = {};
+  for (prop in req.body) {
+    reino[prop] = req.body[prop];
+  }
+
+  await db.collection('reinos').doc(req.params.id).set(reino);
+
+  return res.json({ message: 'Reino actualizado' });
+});
+
+router.route('/reino/:id').delete(async function(req, res) {
+  await db.collection('reinos').doc(req.params.id).delete();
+
+  return res.json({ message: 'Reino eliminado' });
 });
 
 module.exports = router;
