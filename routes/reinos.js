@@ -1,5 +1,4 @@
 const db = require('../modules/firebase');
-const Reino = require('../models/reino');
 const express = require('express');
 const router = express.Router();
 
@@ -26,20 +25,19 @@ router.route('/reinos').post(async function(req, res) {
 });
 
 router.route('/reino/:id').put(async function(req, res) {
-  let reino = {};
-  for (prop in req.body) {
-    reino[prop] = req.body[prop];
-  }
+  const reino = {
+    nombre: req.body.nombre
+  };
 
   await db.collection('reinos').doc(req.params.id).set(reino);
 
-  return res.json({ message: 'Reino actualizado' });
+  res.json({ message: 'Reino actualizado' });
 });
 
 router.route('/reino/:id').delete(async function(req, res) {
   await db.collection('reinos').doc(req.params.id).delete();
 
-  return res.json({ message: 'Reino eliminado' });
+  res.json({ message: 'Reino eliminado' });
 });
 
 module.exports = router;

@@ -1,61 +1,43 @@
-let Orden = require('../models/orden');
-let express = require('express');
-let router = express.Router();
+const db = require('../modules/firebase');
+const express = require('express');
+const router = express.Router();
 
-router.route('/ordenes').get(function(req, res) {
-  Orden.find(function(err, ordenes) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(ordenes);
-  });
-});
-
-router.route('/ordenes').post(function(req, res) {
-  let orden = new Orden(req.body);
-
-  orden.save(function(err, newOrden) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Orden añadida'}, newOrden]);
-  })
-});
-
-router.route('/ordenes/:id').put(function(req, res) {
-  Orden.findOne({ _id: req.params.id }, function(err, orden) {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (orden === null) {
-      return res.send({ message: 'Orden no existe'});
-    }
-
-    for (prop in req.body) {
-      orden[prop] = req.body[prop];
-    }
-
-    orden.save(function(err, updatedOrden) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Orden actualizada'}, updatedOrden]);
+router.route('/ordenes').get(async function(req, res) {
+  const ordenSnapshot = await db.collection('ordenes').get();
+  const ordenes = [];
+  ordenSnapshot.forEach((reino) => {
+    ordenes.push({
+      id: reino.id,
+      nombre: reino.data().nombre
     });
-  })
+  });
+  res.json(ordenes);
 });
 
-router.route('/ordenes/:id').delete(function(req, res) {
-  Orden.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/ordenes').post(async function(req, res) {
+  const orden = {
+    nombre: req.body.nombre
+  }
 
-    res.json({ message: 'Orden eliminada' });
-  });
+  const docRef = await db.collection('ordenes').add(orden);
+
+  res.json({ message: 'Orden creada', id: docRef.id });
+});
+
+router.route('/orden/:id').put(async function(req, res) {
+  const orden = {
+    nombre: req.body.nombre
+  }
+
+  await db.collection('ordenes').doc(req.params.id).set(orden);
+
+  res.json({ message: 'Orden actualizada' });
+});
+
+router.route('/orden/:id').delete(async function(req, res) {
+  await db.collection('ordenes').doc(req.params.id).delete();
+
+  res.json({ message: 'Orden eliminada' });
 });
 
 module.exports = router;
