@@ -1,61 +1,42 @@
-let Especie = require('../models/especie');
-let express = require('express');
-let router = express.Router();
+const db = require('../modules/firebase');
+const express = require('express');
+const router = express.Router();
 
-router.route('/especies').get(function(req, res) {
-  Especie.find(function(err, especies) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(especies);
-  });
-});
-
-router.route('/especies').post(function(req, res) {
-  let especie = new Especie(req.body);
-
-  especie.save(function(err, newEspecie) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Especie añadida' }, newEspecie]);
-  })
-});
-
-router.route('/especies/:id').put(function(req, res) {
-  Especie.findOne({ _id: req.params.id }, function(err, especie) {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (especie === null) {
-      return res.send({ message: 'Especie no existe'});
-    }
-
-    for (prop in req.body) {
-      especie[prop] = req.body[prop];
-    }
-
-    especie.save(function(err, updatedEspecie) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Especie actualizada'}, updatedEspecie]);
+router.route('/especies').get(async function(req, res) {
+  const especiesSnapshot = await db.collection('especies').get();
+  const especies = [];
+  especiesSnapshot.forEach(especie => {
+    especies.push({
+      id: especie.id,
+      nombre: especie.data().nombre
     });
-  })
+  });
+  res.json(especies);
 });
 
-router.route('/especies/:id').delete(function(req, res) {
-  Especie.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/especies').post(async function(req, res) {
+  const especie = {
+    nombre: req.body.nombre
+  };
+  const docRef = await db.collection('especies').add(especie);
 
-    res.json({ message: 'Especie eliminada' });
-  });
+  res.json({ message: 'Especie creada', id: docRef.id });
+});
+
+router.route('/especie/:id').put(async function(req, res) {
+  const especie = {
+    nombre: req.body.nombre
+  };
+
+  await db.collection('especies').doc(req.params.id).set(especie);
+
+  res.json({ message: 'Especie actualizada' });
+});
+
+router.route('/especie/:id').delete(async function(req, res) {
+  await db.collection('especies').doc(req.params.id).delete();
+
+  res.json({ message: 'Especie eliminada' });
 });
 
 module.exports = router;
