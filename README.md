@@ -6,6 +6,8 @@ Para este servicio REST se utilizó una base de datos MongoDB mediante el servic
 
 En la carpeta raíz del proyecto se encuentran los archivos que contienen las colecciones de postman correspondientes a cada recurso.
 
+Además, este back-end esta corriendo en [HEROKU](https://boiling-brushlands-27343.herokuapp.com/).
+
 Para poder correr el proyecto es necesario:
 ### 1. abrir una terminal.
 ### 2. clonar el proyecto
