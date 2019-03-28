@@ -1,61 +1,61 @@
-let Especimen = require('../models/especimen');
+const db = require('../modules/firebase');
 let express = require('express');
 let router = express.Router();
 
-router.route('/especimenes').get(function(req, res) {
-  Especimen.find(function(err, especimenes) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(especimenes);
-  });
-});
-
-router.route('/especimenes').post(function(req, res) {
-  let especimen = new Especimen(req.body);
-
-  especimen.save(function(err, newEspecimen) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Espécimen añadido' }, newEspecimen]);
-  })
-});
-
-router.route('/especimenes/:id').put(function(req, res) {
-  Especimen.findOne({ _id: req.params.id }, function(err, especimen) {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (especimen === null) {
-      return res.send({ message: 'Especimen no existe'});
-    }
-
-    for (prop in req.body) {
-      especimen[prop] = req.body[prop];
-    }
-
-    especimen.save(function(err, updatedEspecimen) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Espécimen actualizado'}, updatedEspecimen]);
+router.route('/especimenes').get(async function(req, res) {
+  const especimenesSnapshot = await db.collection('especimenes').limit(20).get();
+  const especimenes = [];
+  especimenesSnapshot.forEach(especimen => {
+    especimenes.push({
+      id: especimen.id,
+      clase: especimen.data().clase,
+      colector: especimen.data().colector,
+      descripcion: especimen.data().descripcion,
+      especie: especimen.data().especie,
+      familia: especimen.data().familia,
+      genero: especimen.data().genero,
+      lugar: especimen.data().lugar,
+      orden: especimen.data().orden,
+      reino: especimen.data().reino,
+      ubicacion: especimen.data().ubicacion
     });
-  })
+  });
+  res.json(especimenes);
 });
 
-router.route('/especimenes/:id').delete(function(req, res) {
-  Especimen.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/especimenes').post(async function(req, res) {
+  const especimen = {
+    clase: req.body.clase,
+    colector: req.body.colector,
+    descripcion: req.body.descripcion,
+    especie: req.body.especie,
+    familia: req.body.familia,
+    genero: req.body.genero,
+    lugar: req.body.lugar,
+    orden: req.body.orden,
+    reino: req.body.reino,
+    ubicacion: req.body.ubicacion
+  };
+  const docRef = db.collection('especimenes').add(especimen);
 
-    res.json({ message: 'Espécimen eliminado' });
-  });
+  res.json({ message: 'Espécimen creado', id: docRef.id });
+});
+
+router.route('/especimen/:id').put(async function(req, res) {
+  const especimen = {};
+  for (prop in req.body) {
+    especimen[prop] = req.body[prop];
+  }
+
+  await db.collection('especimenes').doc(req.params.id).set(especimen, { merge: true });
+
+  res.json({ message: 'Espécimen actualizado' });
+});
+
+router.route('/especimen/:id').delete(async function(req, res) {
+  await db.collection('especimenes').doc(req.params.id).delete();
+
+  res.json({ message: 'Espécimen eliminado' });
 });
 
 module.exports = router;
