@@ -1,61 +1,42 @@
-let Colector = require('../models/colector');
+const db = require('../modules/firebase');
 let express = require('express');
 let router = express.Router();
 
-router.route('/colectores').get(function(req, res) {
-  Colector.find(function(err, colectores) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.json(colectores);
-  });
-});
-
-router.route('/colectores').post(function(req, res) {
-  let colector = new Colector(req.body);
-
-  colector.save(function(err, newColector) {
-    if (err) {
-      return res.send(err);
-    }
-
-    res.send([{ message: 'Colector añadido' }, newColector]);
-  })
-});
-
-router.route('/colectores/:id').put(function(req, res) {
-  Colector.findOne({ _id: req.params.id }, function(err, colector) {
-    if (err) {
-      return res.send(err);
-    }
-
-    if (colector === null) {
-      return res.send({ message: 'Colector no existe'});
-    }
-
-    for (prop in req.body) {
-      colector[prop] = req.body[prop];
-    }
-
-    colector.save(function(err, updatedColector) {
-      if (err) {
-        return res.send(err);
-      }
-
-      res.send([{ message: 'Colector actualizado'}, updatedColector]);
+router.route('/colectores').get(async function(req, res) {
+  const colectoresSnapshot = await db.collection('colectores').get();
+  const colectores = [];
+  colectoresSnapshot.forEach(colector => {
+    colectores.push({
+      id: colector.id,
+      nombre: colector.data().nombre
     });
-  })
+  });
+  res.json(colectores);
 });
 
-router.route('/colectores/:id').delete(function(req, res) {
-  Colector.deleteOne({ _id: req.params.id }, function(err) {
-    if (err) {
-      return res.send(err);
-    }
+router.route('/colectores').post(async function(req, res) {
+  const colector = {
+    nombre: req.body.nombre
+  };
+  const docRef = await db.collection('colectores').add(colector);
 
-    res.json({ message: 'Colector eliminado' });
-  });
+  res.json({ message: 'Colector creado', id: docRef.id });
+});
+
+router.route('/colector/:id').put(async function(req, res) {
+  const colector = {
+    nombre: req.body.nombre
+  };
+  
+  await db.collection('colectores').doc(req.params.id).set(colector);
+
+  res.json({ message: 'Colector actualizado'});
+});
+
+router.route('/colector/:id').delete(async function(req, res) {
+  await db.collection('colectores').doc(req.params.id).delete();
+
+  res.json({ message: 'Colector eliminado' });
 });
 
 module.exports = router;
