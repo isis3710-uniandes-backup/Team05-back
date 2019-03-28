@@ -24,6 +24,6 @@ npm install
 ~~~
 ### 5. correr el servidor
 ~~~
-npm start
+npm run devstart
 ~~~
 ### 6. ver la [documentación de postman](https://documenter.getpostman.com/view/6824412/S11LsxcA) y abrirla en postman para poder correr las pruebas o descargar el archivo bioAndes.postman_collection.json y abrirlo en postman.
