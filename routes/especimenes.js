@@ -17,7 +17,8 @@ router.route('/especimenes').get(async function(req, res) {
       lugar: especimen.data().lugar,
       orden: especimen.data().orden,
       reino: especimen.data().reino,
-      ubicacion: especimen.data().ubicacion
+      ubicacion: especimen.data().ubicacion,
+      imagen: especimen.data().imagen
     });
   });
   res.json(especimenes);
@@ -34,7 +35,8 @@ router.route('/especimenes').post(async function(req, res) {
     lugar: req.body.lugar,
     orden: req.body.orden,
     reino: req.body.reino,
-    ubicacion: req.body.ubicacion
+    ubicacion: req.body.ubicacion,
+    imagen: req.body.imagen
   };
   const docRef = db.collection('especimenes').add(especimen);
 
