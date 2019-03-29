@@ -3,7 +3,11 @@ let express = require('express');
 let router = express.Router();
 
 router.route('/especimenes').get(async function(req, res) {
-  const especimenesSnapshot = await db.collection('especimenes').limit(20).get();
+  let especimenesRef = db.collection('especimenes');
+  if (req.query.clase) {
+    especimenesRef = especimenesRef.where('clase', '==', req.query.clase);
+  }
+  const especimenesSnapshot = await especimenesRef.limit(20).get();
   const especimenes = [];
   especimenesSnapshot.forEach(especimen => {
     especimenes.push({
