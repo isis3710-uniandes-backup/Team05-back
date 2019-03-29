@@ -28,6 +28,11 @@ router.route('/especimenes').get(async function(req, res) {
   res.json(especimenes);
 });
 
+router.route('/especimen/:id').get(async function(req, res) {
+  const especimen = await db.collection('especimenes').doc(req.params.id).get();
+  res.json(especimen.data());
+});
+
 router.route('/especimenes').post(async function(req, res) {
   const especimen = {
     clase: req.body.clase,
