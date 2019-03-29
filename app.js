@@ -25,6 +25,22 @@ var connectionString = `mongodb://bioandes:clave_bioandes1@ds261247.mlab.com:612
 
 mongoose.connect(connectionString, { useNewUrlParser: true });
 
+// enable CORS
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  }
+  else {
+    next();
+  }
+};
+app.use(allowCrossDomain);
+
 // app.use(logger('dev'));
 // app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
