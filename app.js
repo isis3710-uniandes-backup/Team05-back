@@ -15,6 +15,7 @@ const familias= require('./routes/familias');
 const generos= require('./routes/generos');
 const lugares = require('./routes/lugares');
 const especimenes = require('./routes/especimenes');
+const dominios = require('./routes/dominios');
 
 var app = express();
 
@@ -69,5 +70,6 @@ app.use('/api', generos);
 app.use('/api', ordenes)
 app.use('/api', lugares);
 app.use('/api', especimenes);
+app.use('/api', dominios);
 
 module.exports = app;
