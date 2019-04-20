@@ -4,8 +4,8 @@ let router = express.Router();
 
 router.route('/especimenes').get(async function(req, res) {
   let especimenesRef = db.collection('especimenes');
-  if (req.query.clase) {
-    especimenesRef = especimenesRef.where('clase', '==', req.query.clase);
+  for (let parameter in req.query) {
+    especimenesRef = especimenesRef.where(parameter, '==', req.query[parameter]);
   }
   const especimenesSnapshot = await especimenesRef.limit(20).get();
   const especimenes = [];
@@ -17,6 +17,7 @@ router.route('/especimenes').get(async function(req, res) {
       descripcion: especimen.data().descripcion,
       especie: especimen.data().especie,
       familia: especimen.data().familia,
+      filo: especimen.data().filo,
       genero: especimen.data().genero,
       lugar: especimen.data().lugar,
       orden: especimen.data().orden,
@@ -40,6 +41,7 @@ router.route('/especimenes').post(async function(req, res) {
     descripcion: req.body.descripcion,
     especie: req.body.especie,
     familia: req.body.familia,
+    filo: req.body.filo,
     genero: req.body.genero,
     lugar: req.body.lugar,
     orden: req.body.orden,
