@@ -14,4 +14,13 @@ router.route('/filos').get(async function(req, res) {
   res.json(filos);
 });
 
+router.route('/filos').post(async function(req, res) {
+  const filo = {
+    nombre: req.body.nombre
+  };
+  const docRef = await db.collection('filos').add(filo);
+
+  res.json({message: 'Filo creado', id: docRef.id});
+});
+
 module.exports = router;
