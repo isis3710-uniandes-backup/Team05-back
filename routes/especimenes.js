@@ -38,20 +38,20 @@ router.route('/especimen/:id').get(async function(req, res) {
 router.route('/especimenes').post(async function(req, res) {
   const especimen = {
     clase: req.body.clase,
-    colector: req.body.colector,
-    descripcion: req.body.descripcion,
+    colector: req.body.colector || '',
+    descripcion: req.body.descripcion || '',
     dominio: req.body.dominio,
     especie: req.body.especie,
     familia: req.body.familia,
     filo: req.body.filo,
     genero: req.body.genero,
-    lugar: req.body.lugar,
+    lugar: req.body.lugar || '',
     orden: req.body.orden,
     reino: req.body.reino,
-    ubicacion: req.body.ubicacion,
+    ubicacion: req.body.ubicacion || '',
     imagen: req.body.imagen
   };
-  const docRef = db.collection('especimenes').add(especimen);
+  const docRef = await db.collection('especimenes').add(especimen);
 
   res.json({ message: 'Espécimen creado', id: docRef.id });
 });
