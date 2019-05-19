@@ -1,5 +1,6 @@
 const db = require('../modules/firebase');
 const express = require('express');
+const jwt = require('../utils/jwt');
 const router = express.Router();
 
 router.route('/reinos').get(async function(req, res) {
@@ -15,29 +16,47 @@ router.route('/reinos').get(async function(req, res) {
 });
 
 router.route('/reinos').post(async function(req, res) {
-  const reino = {
-    nombre: req.body.nombre
-  };
+  if(jwt.validateToken){
+    const reino = {
+      nombre: req.body.nombre
+    };
 
-  const docRef = await db.collection('reinos').add(reino);
+    const docRef = await db.collection('reinos').add(reino);
 
-  res.json({ message: 'Reino creado', id: docRef.id });
+    res.json({ message: 'Reino creado', id: docRef.id });
+  }
+  else{
+    res.json({"message": "no autorizado"});
+  }
+
 });
 
 router.route('/reino/:id').put(async function(req, res) {
-  const reino = {
-    nombre: req.body.nombre
-  };
+  if(jwt.validateToken){
+    const reino = {
+      nombre: req.body.nombre
+    };
 
-  await db.collection('reinos').doc(req.params.id).set(reino);
+    await db.collection('reinos').doc(req.params.id).set(reino);
 
-  res.json({ message: 'Reino actualizado' });
+    res.json({ message: 'Reino actualizado' });
+  }
+  else{
+    res.json({"message": "no autorizado"});
+  }
+
 });
 
 router.route('/reino/:id').delete(async function(req, res) {
-  await db.collection('reinos').doc(req.params.id).delete();
+  if(jwt.validateToken){
+    await db.collection('reinos').doc(req.params.id).delete();
 
-  res.json({ message: 'Reino eliminado' });
+    res.json({ message: 'Reino eliminado' });
+  }
+  else{
+    res.json({"message": "no autorizado"});
+  }
+
 });
 
 module.exports = router;

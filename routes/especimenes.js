@@ -1,4 +1,5 @@
 const db = require('../modules/firebase');
+const jwt = require('../utils/jwt');
 let express = require('express');
 let router = express.Router();
 
@@ -24,38 +25,56 @@ router.route('/especimenes').get(async function(req, res) {
 });
 
 router.route('/especimenes').post(async function(req, res) {
-  const especimen = {
-    clase: req.body.clase,
-    colector: req.body.colector,
-    descripcion: req.body.descripcion,
-    especie: req.body.especie,
-    familia: req.body.familia,
-    genero: req.body.genero,
-    lugar: req.body.lugar,
-    orden: req.body.orden,
-    reino: req.body.reino,
-    ubicacion: req.body.ubicacion
-  };
-  const docRef = db.collection('especimenes').add(especimen);
+  if(jwt.validateToken){
+    const especimen = {
+      clase: req.body.clase,
+      colector: req.body.colector,
+      descripcion: req.body.descripcion,
+      especie: req.body.especie,
+      familia: req.body.familia,
+      genero: req.body.genero,
+      lugar: req.body.lugar,
+      orden: req.body.orden,
+      reino: req.body.reino,
+      ubicacion: req.body.ubicacion
+    };
+    const docRef = db.collection('especimenes').add(especimen);
 
-  res.json({ message: 'Espécimen creado', id: docRef.id });
+    res.json({ message: 'Espécimen creado', id: docRef.id });
+  }
+  else{
+    res.json({"message": "no autorizado"});
+  }
+
 });
 
 router.route('/especimen/:id').put(async function(req, res) {
-  const especimen = {};
-  for (prop in req.body) {
-    especimen[prop] = req.body[prop];
+  if(jwt.validateToken){
+    const especimen = {};
+    for (prop in req.body) {
+      especimen[prop] = req.body[prop];
+    }
+
+    await db.collection('especimenes').doc(req.params.id).set(especimen, { merge: true });
+
+    res.json({ message: 'Espécimen actualizado' });
+  }
+  else{
+    res.json({"message": "no autorizado"});
   }
 
-  await db.collection('especimenes').doc(req.params.id).set(especimen, { merge: true });
-
-  res.json({ message: 'Espécimen actualizado' });
 });
 
 router.route('/especimen/:id').delete(async function(req, res) {
-  await db.collection('especimenes').doc(req.params.id).delete();
+  if(jwt.validateToken){
+    await db.collection('especimenes').doc(req.params.id).delete();
 
-  res.json({ message: 'Espécimen eliminado' });
+    res.json({ message: 'Espécimen eliminado' });
+  }
+  else{
+    res.json({"message": "no autorizado"});
+  }
+
 });
 
 module.exports = router;
