@@ -1,6 +1,7 @@
 const db = require('../modules/firebase');
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const jwt = require('../utils/jwt');
+const router = express.Router();
 
 router.route('/dominios').get(async function(req, res) {
   const dominiosSnapshot = await db.collection('dominios').get();
@@ -15,12 +16,16 @@ router.route('/dominios').get(async function(req, res) {
 });
 
 router.route('/dominios').post(async function(req, res) {
-  const dominio = {
-    nombre: req.body.nombre
-  };
-  const docRef = await db.collection('dominios').add(dominio);
+  if (jwt.validateToken) {
+    const dominio = {
+      nombre: req.body.nombre
+    };
+    const docRef = await db.collection('dominios').add(dominio);
 
-  res.json({ message: 'Dominio creado', id: docRef.id });
+    res.json({ message: 'Dominio creado', id: docRef.id });
+  } else {
+    res.json({ message: "no autorizado" });
+  }
 });
 
 module.exports = router;
