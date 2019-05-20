@@ -15,12 +15,16 @@ router.route('/filos').get(async function(req, res) {
 });
 
 router.route('/filos').post(async function(req, res) {
-  const filo = {
-    nombre: req.body.nombre
-  };
-  const docRef = await db.collection('filos').add(filo);
+  if (jwt.validateToken) {
+    const filo = {
+      nombre: req.body.nombre
+    };
+    const docRef = await db.collection('filos').add(filo);
 
-  res.json({message: 'Filo creado', id: docRef.id});
+    res.json({message: 'Filo creado', id: docRef.id});
+  } else {
+    res.json({ message: "no autorizado" });
+  }
 });
 
 module.exports = router;
