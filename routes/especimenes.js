@@ -8,7 +8,7 @@ router.route('/especimenes').get(async function (req, res) {
   for (let parameter in req.query) {
     especimenesRef = especimenesRef.where(parameter, '==', req.query[parameter])
   }
-  const especimenesSnapshot = await especimenesRef.limit(20).get()
+  const especimenesSnapshot = await especimenesRef.limit(100).get()
   const especimenes = []
   especimenesSnapshot.forEach(especimen => {
     especimenes.push({
