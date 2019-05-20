@@ -6,6 +6,8 @@ Para este servicio REST se utilizó una base de datos MongoDB mediante el servic
 
 En la carpeta raíz del proyecto se encuentran los archivos que contienen las colecciones de postman correspondientes a cada recurso.
 
+Además, este back-end esta corriendo en [HEROKU](https://boiling-brushlands-27343.herokuapp.com/) y está disponible en [api.bioandes.cpotdevin.com](http://api.bioandes.cpotdevin.com).
+
 Para poder correr el proyecto es necesario:
 ### 1. abrir una terminal.
 ### 2. clonar el proyecto
@@ -22,6 +24,6 @@ npm install
 ~~~
 ### 5. correr el servidor
 ~~~
-npm start
+npm run devstart
 ~~~
 ### 6. ver la [documentación de postman](https://documenter.getpostman.com/view/6824412/S11LsxcA) y abrirla en postman para poder correr las pruebas o descargar el archivo bioAndes.postman_collection.json y abrirlo en postman.
