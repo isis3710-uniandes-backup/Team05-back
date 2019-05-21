@@ -4,6 +4,8 @@ let express = require('express')
 let router = express.Router()
 
 router.route('/especimenes').get(async function (req, res) {
+
+
   let especimenesRef = db.collection('especimenes')
   for (let parameter in req.query) {
     especimenesRef = especimenesRef.where(parameter, '==', req.query[parameter])
@@ -34,10 +36,12 @@ router.route('/especimenes').get(async function (req, res) {
 router.route('/especimen/:id').get(async function (req, res) {
   const especimen = await db.collection('especimenes').doc(req.params.id).get()
   res.json(especimen.data())
+
 })
 
 router.route('/especimenes').post(async function (req, res) {
-  if (jwt.validateToken) {
+
+  if (true) {
     const especimen = {
       clase: req.body.clase,
       colector: req.body.colector || '',

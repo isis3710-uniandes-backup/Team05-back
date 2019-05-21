@@ -17,6 +17,7 @@ const lugares = require('./routes/lugares');
 const especimenes = require('./routes/especimenes');
 const dominios = require('./routes/dominios');
 const filos = require('./routes/filos');
+const jwt = require('./routes/auth');
 
 var app = express();
 
@@ -73,5 +74,6 @@ app.use('/api', lugares);
 app.use('/api', especimenes);
 app.use('/api', dominios);
 app.use('/api', filos);
+app.use('/api', jwt);
 
 module.exports = app;

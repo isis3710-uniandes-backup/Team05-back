@@ -1,10 +1,16 @@
 const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = 'ncus8aMAbIA0MSnhai1';
+const payload = {
+
+           check:  true
+
+         };
 
 module.exports = {
     verifyToken:
         function (req, res, next) {
             let token = req.headers['x-access-token'];
+
             if (!token) {
                 return res.status(403)
                     .send({
@@ -26,7 +32,7 @@ module.exports = {
             });
         },
     issueToken:
-        function (payload, options) {
-            return jwt.sign(payload, jwtSecret, options);
+        function () {
+            return jwt.sign(payload, jwtSecret);
         }
 }
